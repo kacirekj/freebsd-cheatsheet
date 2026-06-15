@@ -17,9 +17,8 @@ Kill::
     kill -9 12345
     pkill Xorg
 
-Disk usage
-
-  du -sh /*
+Disk usage;
+    du -sh /*
 
 Search:
 
