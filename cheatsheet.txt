@@ -39,7 +39,6 @@ TIPS
           mount -u -o rw /
 
 
-
 WIFI CONNECTION
 ===============
 
@@ -57,7 +56,6 @@ WIFI CONNECTION
           ifconfig wlan0 up
           wpa_supplicant -B -i wlan0 -c /etc/wpa_supplicant.conf
           dhclient wlan0
-
 
 
 MOUNT FILESYSTEMS
@@ -123,7 +121,6 @@ DISK PARTITIONING
           gpart show da0
           zpool status
           zfs list
-
 
 
 BACKUP AND RESTORE WITH ZFS ROOT PARTITION
