@@ -1,0 +1,44 @@
+FreeBSD Cheat Sheet 
+===================
+
+
+Mount ZFS partition from external drive
+---------------------------------------
+
+  zpool import
+  zpool import -o altroot=/mnt POOLNAME
+
+
+Create basic bootable disk partition scheme with EFI, UFS and ZFS
+-----------------------------------------------------------------
+
+Show disks and partitions:
+
+  gpart show
+  geom disk list
+
+Destroy and then create partition table:
+
+  gpart destroy -F da0
+  gpart create -s gpt da0
+
+Create EFI and UFS partitions:
+
+  gpart add -t efi -s 260M da0
+  gpart add -t freebsd-ufs -s 20G da0
+
+Create ZFS partition **without -s** so it will be stretch to end of the disk:
+
+  gpart add -t freebsd-zfs da0
+
+Format EFI, UFS and ZFS partitions:
+
+  newfs_msdos -F 32 -c 1 /dev/da0p1
+  newfs -U /dev/da0p2
+  zpool create mypool /dev/da0p3
+
+Check result:
+
+  gpart show da0
+  zpool status
+  zfs list
