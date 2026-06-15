@@ -5,6 +5,7 @@ FreeBSD Cheat Sheet
 
 
 
+
 Tips
 ====
 
@@ -33,7 +34,6 @@ Ignore errors:
     find 2> /dev/null
 
 
-
 Live CD tips
 ------------
 
@@ -50,7 +50,6 @@ Wifi connection
 List:
 
     ifconfig wlan0 scan
-
 
 
 Prepare rc.conf if needed
@@ -71,7 +70,6 @@ Mount filesystems
 =================
 
 
-
 Mount encrypted ZFS partition:
 ------------------------------
 
@@ -80,7 +78,6 @@ Unlock disk, list zpool and mount:
     geli attach /dev/da0p4
     zpool import
     zpool import -o altroot=/mnt POOLNAME
-
 
 
 Mount UNKNOWN disk partition
@@ -97,7 +94,6 @@ Detect filesystem, mount and unmount:
 
 Disk partitioning
 =================
-
 
 
 Create partition scheme on an external disk
@@ -143,7 +139,6 @@ Backup and restore with ZFS root partition
 ==========================================
 
 
-
 Backup and restore partition table, /EFI and /boot partitions
 -------------------------------------------------------------
 
@@ -158,7 +153,6 @@ Backup and restore partition table, /EFI and /boot partitions
     gpart restore da0 < /mnt/backup_gpart_backup_partition_scheme.backup
     tar -C /mnt/efi -xf /mnt/efi-partition.tar
     dd if=/mnt/da0p2-freebsd-boot.img of=/dev/da0p2 bs=512
-
 
 
 Backup and recover root partition with ZFS
@@ -183,7 +177,6 @@ Backup and recover root partition with ZFS
     reboot
 
 
-
 Backup and recover root partition from external drive
 -----------------------------------------------------
 
@@ -193,7 +186,7 @@ Backup and recover root partition from external drive
 
 2. Receive snasphot from external disk to new default:
 
-    zfs receive zroot/ROOT/new_default < /mnt/zroot--ROOT/default@BEFORE_UPGRADE_TO_V15.0.zfs
+    zfs receive zroot/ROOT/new_default < /mnt/zroot--ROOT--default@BEFORE_UPGRADE_TO_V15.0.zfs
 
 3. Activate new Boot environment for next reboot:
 
