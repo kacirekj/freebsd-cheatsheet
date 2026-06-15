@@ -10,6 +10,13 @@ Search in manual pages names and descriptions, or as fulltext:
     man -K wifi_fulltext
 
 
+Live CD tips
+------------
+
+Start with re-mount of the root filesystem for read-write:
+
+    mount -u -o rw /
+
 
 
 Mount filesystems
@@ -138,13 +145,6 @@ Backup and recover root partition from external drive:
     bectl activate new_default
     reboot
 
-
-Live CD tips
-============
-
-Start with re-mount of the root filesystem for read-write:
-
-    mount -u -o rw /
 
 
 
