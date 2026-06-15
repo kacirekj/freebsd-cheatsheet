@@ -11,6 +11,25 @@ Search in manual pages names and descriptions, or as fulltext::
     man -k wifi
     man -K wifi_fulltext
 
+Kill:
+
+    kill 12345
+    kill -9 12345
+    pkill Xorg
+
+Disk usage:
+
+    du -sh /*
+
+Search:
+
+    find /etc | grep efi
+    grep -R "text_inside_file" /etc   2> /dev/null
+
+Ignore errors:
+
+    find 2> /dev/null
+
 
 Live CD tips
 ------------
@@ -44,18 +63,18 @@ Mount filesystems
 =================
 
 
-Mount ZFS disk partition from external or internal drive
---------------------------------------------------------
+Mount encrypted ZFS partition:
+------------------------------
 
-List and mount::
+Unlock disk, list zpool and mount:
 
+    geli attach /dev/da0p4
     zpool import
     zpool import -o altroot=/mnt POOLNAME
 
 
 Mount UNKNOWN disk partition
 ----------------------------
-
 
 Detect filesystem, mount and unmount::
 
