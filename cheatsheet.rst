@@ -19,7 +19,7 @@ Kill::
 
 Disk usage
 
-    du -sh /*
+  du -sh /*
 
 Search:
 
