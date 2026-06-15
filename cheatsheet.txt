@@ -17,16 +17,16 @@ Kill::
     kill -9 12345
     pkill Xorg
 
-Disk usage:
+Disk usage::
 
     du -sh /*
 
-Search:
+Search::
 
     find /etc | grep efi
     grep -R "text_inside_file" /etc   2> /dev/null
 
-Ignore errors:
+Ignore errors::
 
         find 2> /dev/null
 
@@ -66,7 +66,7 @@ Mount filesystems
 Mount encrypted ZFS partition:
 ------------------------------
 
-Unlock disk, list zpool and mount:
+Unlock disk, list zpool and mount::
 
     geli attach /dev/da0p4
     zpool import
