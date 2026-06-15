@@ -3,6 +3,7 @@ FreeBSD Cheat Sheet
 ===================
 
 
+
 Tips
 ====
 
@@ -39,6 +40,7 @@ Tips
         mount -u -o rw /
 
 
+
 Wifi connection
 ===============
 
@@ -57,6 +59,7 @@ Wifi connection
       ifconfig wlan0 up
       wpa_supplicant -B -i wlan0 -c /etc/wpa_supplicant.conf
       dhclient wlan0
+
 
 
 Mount filesystems
@@ -81,6 +84,7 @@ Mount filesystems
         fstyp /dev/da0p1
         mount -t ufs /dev/da0p1 /mnt/disk
         umount /mnt/disk
+
 
 
 Disk partitioning
@@ -122,6 +126,7 @@ Disk partitioning
         gpart show da0
         zpool status
         zfs list
+
 
 
 Backup and restore with ZFS root partition
