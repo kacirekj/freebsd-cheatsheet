@@ -26,8 +26,10 @@ Disk partitioning
 =================
 
 
-Create partition scheme on an external disk exactly as it is in *the default* FreeBSD install disk scheme
----------------------------------------------------------------------------------------------------------
+Create partition scheme on an external disk
+-------------------------------------------
+
+Exact example of default FreeBSD partitioning scheme during system installation.
 
 1. Show disks and partitions:
 
@@ -121,7 +123,7 @@ Backup and recover root partition from external drive:
 
 
 Live CD tips
-------------
+============
 
 Start with re-mount of the root filesystem for read-write:
 
