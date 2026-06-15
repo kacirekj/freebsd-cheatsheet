@@ -2,182 +2,166 @@
 FreeBSD Cheat Sheet
 ===================
 
-
 Tips
 ====
 
-Search in manual pages names and descriptions, or as fulltext:
+    Search in manual pages names and descriptions, or as fulltext:
 
-    man -k wifi
-    man -K wifi_fulltext
+        man -k wifi
+        man -K wifi_fulltext
 
-Kill::
+    Kill:
 
-    kill 12345
-    kill -9 12345
-    pkill Xorg
+        kill 12345
+        kill -9 12345
+        pkill Xorg
 
-Disk usage::
+    Disk usage:
 
-    du -sh /*
+        du -sh /*
 
-Search::
+    Search:
 
-    find /etc | grep efi
-    grep -R "text_inside_file" /etc   2> /dev/null
+        find /etc | grep efi
+        grep -R "text_inside_file" /etc   2> /dev/null
 
-Ignore errors::
+    Ignore errors:
 
         find 2> /dev/null
 
+    Live CD tips
+    ------------
 
-Live CD tips
-------------
+        Start with re-mount of the root filesystem for read-write:
 
-Start with re-mount of the root filesystem for read-write::
-
-    mount -u -o rw /
-
+            mount -u -o rw /
 
 Wifi connection
 ===============
 
-List::
+    List:
 
-    ifconfig wlan0 scan
+        ifconfig wlan0 scan
 
+    Connect:
 
-Prepare rc.conf if needed
--------------------------
-
-
-Connect::
-
-    wpa_passphrase "SSID" "PASSWORD" > /etc/wpa_supplicant.conf
-    ifconfig wlan0 up
-    wpa_supplicant -B -i wlan0 -c /etc/wpa_supplicant.conf
-    dhclient wlan0
-
+        wpa_passphrase "SSID" "PASSWORD" > /etc/wpa_supplicant.conf
+        ifconfig wlan0 up
+        wpa_supplicant -B -i wlan0 -c /etc/wpa_supplicant.conf
+        dhclient wlan0
 
 Mount filesystems
 =================
 
+    Mount encrypted ZFS partition:
+    ------------------------------
 
-Mount encrypted ZFS partition:
-------------------------------
+        Unlock disk, list zpool and mount:
 
-Unlock disk, list zpool and mount::
-
-    geli attach /dev/da0p4
-    zpool import
-    zpool import -o altroot=/mnt POOLNAME
+            geli attach /dev/da0p4
+            zpool import
+            zpool import -o altroot=/mnt POOLNAME
 
 
-Mount UNKNOWN disk partition
-----------------------------
+    Mount UNKNOWN disk partition
+    ----------------------------
 
-Detect filesystem, mount and unmount::
+        Detect filesystem, mount and unmount:
 
-    fstyp /dev/da0p1
-    mount -t ufs /dev/da0p1 /mnt/disk
-    umount /mnt/disk
-
+            fstyp /dev/da0p1
+            mount -t ufs /dev/da0p1 /mnt/disk
+            umount /mnt/disk
 
 Disk partitioning
 =================
 
+    Create partition scheme on an external disk
+    -------------------------------------------
 
-Create partition scheme on an external disk
--------------------------------------------
+        Exact example of default FreeBSD partitioning scheme during system installation.
 
-Exact example of default FreeBSD partitioning scheme during system installation.
+        1. Show disks and partitions:
 
-1. Show disks and partitions::
+            gpart show
+            geom disk list
 
-    gpart show
-    geom disk list
+        2. Destroy and then create new GPT partition table:
 
-2. Destroy and then create new GPT partition table::
+            gpart destroy -F da0
+            gpart create -s gpt da0
 
-    gpart destroy -F da0
-    gpart create -s gpt da0
+        3. Create EFI, FreeBSD boot, swap:
 
-3. Create EFI, FreeBSD boot, swap::
+            gpart add -t efi -s 260M da0
+            gpart add -t freebsd-boot -s 512K da0
+            gpart add -t freebsd-swap -s 4G da0
 
-    gpart add -t efi -s 260M da0
-    gpart add -t freebsd-boot -s 512K da0
-    gpart add -t freebsd-swap -s 4G da0
+        5. Create ZFS partition *without* ``-s`` so it will stretch to the end of the disk:
 
-5. Create ZFS partition *without* ``-s`` so it will stretch to the end of the disk::
+            gpart add -t freebsd-zfs da0
 
-    gpart add -t freebsd-zfs da0
+        6. Format EFI and ZFS partition, boot and swap don't have to be formatted:
 
-6. Format EFI and ZFS partition, boot and swap don't have to be formatted::
+            newfs_msdos -F 32 -c 1 /dev/da0p1
+            zpool create mypool /dev/da0p4
 
-    newfs_msdos -F 32 -c 1 /dev/da0p1
-    zpool create mypool /dev/da0p4
+        8. Check result:
 
-8. Check result::
-
-    gpart show da0
-    zpool status
-    zfs list
-
+            gpart show da0
+            zpool status
+            zfs list
 
 Backup and restore with ZFS root partition
 ==========================================
 
+    Backup and restore partition table, /EFI and /boot partitions
+    -------------------------------------------------------------
 
-Backup and restore partition table, /efi and /boot partitions
--------------------------------------------------------------
+        1. Backup GPT, /efi and /boot:
 
-1. Backup GPT, /efi and /boot::
+            gpart backup da0 >   /mnt/backup_gpart_backup_partition_scheme.backup
+            dd if=/dev/da0p2 of=/mnt/backup_freebsd_boot.img bs=512 status=progress
+            tar -C /mnt/efi -cf  /mnt/backup_efi_partition.tar .
 
-    gpart backup da0 >   /mnt/backup_gpart_backup_partition_scheme.backup
-    dd if=/dev/da0p2 of=/mnt/backup_freebsd_boot.img bs=512 status=progress
-    tar -C /mnt/efi -cf  /mnt/backup_efi_partition.tar .
+        2. Restore GPT, /efi and /boot:
 
-2. Restore GPT, /efi and /boot::
+            gpart restore da0 < /mnt/backup_gpart_backup_partition_scheme.backup
+            tar -C /mnt/efi -xf /mnt/efi-partition.tar
+            dd if=/mnt/da0p2-freebsd-boot.img of=/dev/da0p2 bs=512
 
-    gpart restore da0 < /mnt/backup_gpart_backup_partition_scheme.backup
-    tar -C /mnt/efi -xf /mnt/efi-partition.tar
-    dd if=/mnt/da0p2-freebsd-boot.img of=/dev/da0p2 bs=512
+    Backup and recover root partition with ZFS
+    ------------------------------------------
 
+        1. Create an ZFS backup snapshot:
 
-Backup and recover root partition with ZFS
-------------------------------------------
+            zfs snapshot zroot/ROOT/default@BEFORE_UPGRADE_TO_V15.0
 
-1. Create an ZFS backup snapshot::
+        2. Create new Boot environment from the ZFS snapshot:
 
-    zfs snapshot zroot/ROOT/default@BEFORE_UPGRADE_TO_V15.0
+            bectl create -e zroot/ROOT/default@BEFORE_UPGRADE_TO_V15.0 before-v15
 
-2. Create new Boot environment from the ZFS snapshot::
+        3. Suppose here you are doing update of FreeBSD and it FAILED:
 
-    bectl create -e zroot/ROOT/default@BEFORE_UPGRADE_TO_V15.0 before-v15
+            freebsd-update -r 15.0-RELEASE upgrade
+            FATAL ERROR
 
-3. Suppose here you are doing update of FreeBSD and it FAILED::
+        4. Recover by setting active Boot environment for the next reboot:
 
-    freebsd-update -r 15.0-RELEASE upgrade
-    FATAL ERROR
+            bectl activate -t before-v15
+            reboot
 
-4. Recover by setting active Boot environment for the next reboot::
+    Backup and recover root partition from external drive
+    -----------------------------------------------------
 
-    bectl activate -t before-v15
-    reboot
+        1. Send snapshot to externsal disk:
 
+            zfs send zroot/ROOT/default@BEFORE_UPGRADE_TO_V15.0 > /mnt/zroot--ROOT--default@BEFORE_UPGRADE_TO_V15.0.zfs
 
-Backup and recover root partition from external drive
------------------------------------------------------
+        2. Receive snasphot from external disk to new default:
 
-1. Send snapshot to externsal disk::
+            zfs receive zroot/ROOT/new_default < /mnt/zroot--ROOT--default@BEFORE_UPGRADE_TO_V15.0.zfs
 
-    zfs send zroot/ROOT/default@BEFORE_UPGRADE_TO_V15.0 > /mnt/zroot--ROOT--default@BEFORE_UPGRADE_TO_V15.0.zfs
+        3. Activate new Boot environment for next reboot:
 
-2. Receive snasphot from external disk to new default::
-
-    zfs receive zroot/ROOT/new_default < /mnt/zroot--ROOT--default@BEFORE_UPGRADE_TO_V15.0.zfs
-
-3. Activate new Boot environment for next reboot::
-
-    bectl activate new_default
-    reboot
+            bectl activate new_default
+            reboot
