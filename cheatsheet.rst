@@ -11,6 +11,7 @@ Search in manual pages names and descriptions, or as fulltext::
     man -k wifi
     man -K wifi_fulltext
 
+
 Live CD tips
 ------------
 
@@ -42,6 +43,7 @@ Connect::
 Mount filesystems
 =================
 
+
 Mount ZFS disk partition from external or internal drive
 --------------------------------------------------------
 
@@ -54,6 +56,7 @@ List and mount::
 Mount UNKNOWN disk partition
 ----------------------------
 
+
 Detect filesystem, mount and unmount::
 
     fstyp /dev/da0p1
@@ -63,6 +66,7 @@ Detect filesystem, mount and unmount::
 
 Disk partitioning
 =================
+
 
 Create partition scheme on an external disk
 -------------------------------------------
@@ -103,6 +107,7 @@ Exact example of default FreeBSD partitioning scheme during system installation.
 
 Backup and restore with ZFS root partition
 ==========================================
+
 
 Backup and restore partition table, /efi and /boot partitions
 -------------------------------------------------------------
