@@ -23,7 +23,7 @@ Start with re-mount of the root filesystem for read-write::
 Wifi connection
 ===============
 
-List:
+List::
 
     ifconfig wlan0 scan
 
@@ -75,34 +75,34 @@ Exact example of default FreeBSD partitioning scheme during system installation.
 
 1. Show disks and partitions::
 
-       gpart show
-       geom disk list
+    gpart show
+    geom disk list
 
 2. Destroy and then create new GPT partition table::
 
-       gpart destroy -F da0
-       gpart create -s gpt da0
+    gpart destroy -F da0
+    gpart create -s gpt da0
 
 3. Create EFI, FreeBSD boot, swap::
 
-       gpart add -t efi -s 260M da0
-       gpart add -t freebsd-boot -s 512K da0
-       gpart add -t freebsd-swap -s 4G da0
+    gpart add -t efi -s 260M da0
+    gpart add -t freebsd-boot -s 512K da0
+    gpart add -t freebsd-swap -s 4G da0
 
 5. Create ZFS partition *without* ``-s`` so it will stretch to the end of the disk::
 
-       gpart add -t freebsd-zfs da0
+    gpart add -t freebsd-zfs da0
 
 6. Format EFI and ZFS partition, boot and swap don't have to be formatted::
 
-       newfs_msdos -F 32 -c 1 /dev/da0p1
-       zpool create mypool /dev/da0p4
+    newfs_msdos -F 32 -c 1 /dev/da0p1
+    zpool create mypool /dev/da0p4
 
 8. Check result::
 
-       gpart show da0
-       zpool status
-       zfs list
+    gpart show da0
+    zpool status
+    zfs list
 
 
 Backup and restore with ZFS root partition
@@ -114,15 +114,15 @@ Backup and restore partition table, /efi and /boot partitions
 
 1. Backup GPT, /efi and /boot::
 
-       gpart backup da0 >   /mnt/backup_gpart_backup_partition_scheme.backup
-       dd if=/dev/da0p2 of=/mnt/backup_freebsd_boot.img bs=512 status=progress
-       tar -C /mnt/efi -cf  /mnt/backup_efi_partition.tar .
+    gpart backup da0 >   /mnt/backup_gpart_backup_partition_scheme.backup
+    dd if=/dev/da0p2 of=/mnt/backup_freebsd_boot.img bs=512 status=progress
+    tar -C /mnt/efi -cf  /mnt/backup_efi_partition.tar .
 
 2. Restore GPT, /efi and /boot::
 
-       gpart restore da0 < /mnt/backup_gpart_backup_partition_scheme.backup
-       tar -C /mnt/efi -xf /mnt/efi-partition.tar
-       dd if=/mnt/da0p2-freebsd-boot.img of=/dev/da0p2 bs=512
+    gpart restore da0 < /mnt/backup_gpart_backup_partition_scheme.backup
+    tar -C /mnt/efi -xf /mnt/efi-partition.tar
+    dd if=/mnt/da0p2-freebsd-boot.img of=/dev/da0p2 bs=512
 
 
 Backup and recover root partition with ZFS
@@ -130,21 +130,21 @@ Backup and recover root partition with ZFS
 
 1. Create an ZFS backup snapshot::
 
-       zfs snapshot zroot/ROOT/default@BEFORE_UPGRADE_TO_V15.0
+    zfs snapshot zroot/ROOT/default@BEFORE_UPGRADE_TO_V15.0
 
 2. Create new Boot environment from the ZFS snapshot::
 
-       bectl create -e zroot/ROOT/default@BEFORE_UPGRADE_TO_V15.0 before-v15
+    bectl create -e zroot/ROOT/default@BEFORE_UPGRADE_TO_V15.0 before-v15
 
 3. Suppose here you are doing update of FreeBSD and it FAILED::
 
-       freebsd-update -r 15.0-RELEASE upgrade
-       FATAL ERROR
+    freebsd-update -r 15.0-RELEASE upgrade
+    FATAL ERROR
 
 4. Recover by setting active Boot environment for the next reboot::
 
-       bectl activate -t before-v15
-       reboot
+    bectl activate -t before-v15
+    reboot
 
 
 Backup and recover root partition from external drive
@@ -152,13 +152,13 @@ Backup and recover root partition from external drive
 
 1. Send snapshot to externsal disk::
 
-       zfs send zroot/ROOT/default@BEFORE_UPGRADE_TO_V15.0 > /mnt/zroot--ROOT--default@BEFORE_UPGRADE_TO_V15.0.zfs
+    zfs send zroot/ROOT/default@BEFORE_UPGRADE_TO_V15.0 > /mnt/zroot--ROOT--default@BEFORE_UPGRADE_TO_V15.0.zfs
 
 2. Receive snasphot from external disk to new default::
 
-       zfs receive zroot/ROOT/new_default < /mnt/zroot--ROOT--default@BEFORE_UPGRADE_TO_V15.0.zfs
+    zfs receive zroot/ROOT/new_default < /mnt/zroot--ROOT--default@BEFORE_UPGRADE_TO_V15.0.zfs
 
 3. Activate new Boot environment for next reboot::
 
-       bectl activate new_default
-       reboot
+    bectl activate new_default
+    reboot
