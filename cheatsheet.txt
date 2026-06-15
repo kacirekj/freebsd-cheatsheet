@@ -2,6 +2,7 @@
 FreeBSD Cheat Sheet
 ===================
 
+
 Tips
 ====
 
@@ -29,12 +30,14 @@ Tips
 
         find 2> /dev/null
 
+
     Live CD tips
     ------------
 
         Start with re-mount of the root filesystem for read-write:
 
             mount -u -o rw /
+
 
 Wifi connection
 ===============
@@ -50,8 +53,10 @@ Wifi connection
         wpa_supplicant -B -i wlan0 -c /etc/wpa_supplicant.conf
         dhclient wlan0
 
+
 Mount filesystems
 =================
+
 
     Mount encrypted ZFS partition:
     ------------------------------
@@ -63,6 +68,7 @@ Mount filesystems
             zpool import -o altroot=/mnt POOLNAME
 
 
+
     Mount UNKNOWN disk partition
     ----------------------------
 
@@ -72,8 +78,10 @@ Mount filesystems
             mount -t ufs /dev/da0p1 /mnt/disk
             umount /mnt/disk
 
+
 Disk partitioning
 =================
+
 
     Create partition scheme on an external disk
     -------------------------------------------
@@ -111,8 +119,10 @@ Disk partitioning
             zpool status
             zfs list
 
+
 Backup and restore with ZFS root partition
 ==========================================
+
 
     Backup and restore partition table, /EFI and /boot partitions
     -------------------------------------------------------------
@@ -128,6 +138,7 @@ Backup and restore with ZFS root partition
             gpart restore da0 < /mnt/backup_gpart_backup_partition_scheme.backup
             tar -C /mnt/efi -xf /mnt/efi-partition.tar
             dd if=/mnt/da0p2-freebsd-boot.img of=/dev/da0p2 bs=512
+
 
     Backup and recover root partition with ZFS
     ------------------------------------------
@@ -149,6 +160,7 @@ Backup and restore with ZFS root partition
 
             bectl activate -t before-v15
             reboot
+
 
     Backup and recover root partition from external drive
     -----------------------------------------------------
