@@ -9,6 +9,8 @@ Mount filesystems
 Mount ZFS disk partition from external or internal drive
 --------------------------------------------------------
 
+List and mount:
+
     zpool import
     zpool import -o altroot=/mnt POOLNAME
 
