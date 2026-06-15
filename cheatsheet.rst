@@ -28,7 +28,7 @@ Search:
 
 Ignore errors:
 
-    find 2> /dev/null
+        find 2> /dev/null
 
 
 Live CD tips
