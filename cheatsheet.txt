@@ -1,9 +1,9 @@
 ===================
-FreeBSD Cheat Sheet
+FREEBSD CHEAT SHEET
 ===================
 
 
-Tips
+TIPS
 ====
 
      Search in manual pages names and descriptions, or as fulltext:
@@ -40,7 +40,7 @@ Tips
 
 
 
-Wifi connection
+WIFI CONNECTION
 ===============
 
      List:
@@ -60,7 +60,7 @@ Wifi connection
 
 
 
-Mount filesystems
+MOUNT FILESYSTEMS
 =================
 
 
@@ -84,7 +84,7 @@ Mount filesystems
           umount /mnt/disk
 
 
-Disk partitioning
+DISK PARTITIONING
 =================
 
 
@@ -126,7 +126,7 @@ Disk partitioning
 
 
 
-Backup and restore with ZFS root partition
+BACKUP AND RESTORE WITH ZFS ROOT PARTITION
 ==========================================
 
 
