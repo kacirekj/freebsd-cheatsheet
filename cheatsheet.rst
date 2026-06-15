@@ -18,6 +18,7 @@ Kill::
     pkill Xorg
 
 Disk usage:
+
     du -sh /*
 
 Search:
