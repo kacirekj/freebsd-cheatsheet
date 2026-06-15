@@ -11,14 +11,12 @@ Search in manual pages names and descriptions, or as fulltext::
     man -k wifi
     man -K wifi_fulltext
 
-
 Live CD tips
 ------------
 
 Start with re-mount of the root filesystem for read-write::
 
     mount -u -o rw /
-
 
 
 Wifi connection
@@ -41,7 +39,6 @@ Connect::
     dhclient wlan0
 
 
-
 Mount filesystems
 =================
 
@@ -62,7 +59,6 @@ Detect filesystem, mount and unmount::
     fstyp /dev/da0p1
     mount -t ufs /dev/da0p1 /mnt/disk
     umount /mnt/disk
-
 
 
 Disk partitioning
@@ -105,7 +101,6 @@ Exact example of default FreeBSD partitioning scheme during system installation.
        zfs list
 
 
-
 Backup and restore with ZFS root partition
 ==========================================
 
@@ -123,7 +118,6 @@ Backup and restore partition table, /efi and /boot partitions
        gpart restore da0 < /mnt/backup_gpart_backup_partition_scheme.backup
        tar -C /mnt/efi -xf /mnt/efi-partition.tar
        dd if=/mnt/da0p2-freebsd-boot.img of=/dev/da0p2 bs=512
-
 
 
 Backup and recover root partition with ZFS
@@ -146,7 +140,6 @@ Backup and recover root partition with ZFS
 
        bectl activate -t before-v15
        reboot
-
 
 
 Backup and recover root partition from external drive
