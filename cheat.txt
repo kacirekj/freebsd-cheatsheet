@@ -1,6 +1,7 @@
 FreeBSD Cheat Sheet 
 
 
+
 Mount filesystems
 =================
 
@@ -20,6 +21,7 @@ Detect filesystem, mount and unmount:
     fstyp /dev/da0p1
     mount -t ufs /dev/da0p1 /mnt/disk
     umount /mnt/disk
+
 
 
 Disk partitioning
@@ -63,6 +65,7 @@ Exact example of default FreeBSD partitioning scheme during system installation.
     zfs list
 
 
+
 Backup and restore with ZFS root partition
 ==========================================
 
@@ -81,6 +84,7 @@ Restore from external drive:
     gpart restore da0 < /mnt/backup_gpart_backup_partition_scheme.backup
     tar -C /mnt/efi -xf /mnt/efi-partition.tar
     dd if=/mnt/da0p2-freebsd-boot.img of=/dev/da0p2 bs=512
+
 
 
 Backup and recover root partition with ZFS
@@ -103,6 +107,7 @@ Backup and recover root partition with ZFS
 
     bectl activate -t before-v15
     reboot
+
 
 
 Backup and recover root partition from external drive:
