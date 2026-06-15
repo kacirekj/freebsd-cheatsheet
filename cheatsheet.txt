@@ -1,4 +1,5 @@
-FreeBSD Cheat Sheet 
+FreeBSD Cheat Sheet
+###################
 
 
 Tips
@@ -17,6 +18,25 @@ Start with re-mount of the root filesystem for read-write:
 
     mount -u -o rw /
 
+
+
+Wifi connection
+===============
+
+List:
+
+    ifconfig wlan0 scan
+
+Prepare rc.conf if needed:
+
+    
+
+Connect:
+
+    wpa_passphrase "SSID" "PASSWORD" > /etc/wpa_supplicant.conf
+    ifconfig wlan0 up
+    wpa_supplicant -B -i wlan0 -c /etc/wpa_supplicant.conf
+    dhclient wlan0
 
 
 Mount filesystems
