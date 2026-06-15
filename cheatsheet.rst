@@ -6,12 +6,12 @@ FreeBSD Cheat Sheet
 Tips
 ====
 
-Search in manual pages names and descriptions, or as fulltext::
-
+Search in manual pages names and descriptions, or as fulltext:
+::
     man -k wifi
     man -K wifi_fulltext
 
-Kill::
+Kill:
 
     kill 12345
     kill -9 12345
