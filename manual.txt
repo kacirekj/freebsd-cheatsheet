@@ -1,44 +1,111 @@
 FreeBSD Cheat Sheet 
-===================
 
 
-Mount ZFS partition from external drive
+Mount filesystems
+=================
+
+
+Mount ZFS disk partition from external or internal drive
+---------------------------------------------------
+
+    zpool import
+    zpool import -o altroot=/mnt POOLNAME
+
+
+Mount UNKNOWN disk partition 
 ---------------------------------------
 
-  zpool import
-  zpool import -o altroot=/mnt POOLNAME
+Detect filesystem, mount and unmount:
+    
+    fstyp /dev/da0p1
+    mount -t ufs /dev/da0p1 /mnt/disk
+    umount /mnt/disk
 
 
-Create basic bootable disk partition scheme with EFI, UFS and ZFS
------------------------------------------------------------------
+Create basic bootable disk partition scheme with EFI, UFS and ZFS partitions
+----------------------------------------------------------------------------
 
-Show disks and partitions:
+1. Show disks and partitions:
 
-  gpart show
-  geom disk list
+    gpart show
+    geom disk list
 
-Destroy and then create partition table:
+2. Destroy and then create partition table:
 
-  gpart destroy -F da0
-  gpart create -s gpt da0
+    gpart destroy -F da0
+    gpart create -s gpt da0
 
-Create EFI and UFS partitions:
+3. Create EFI and UFS partitions:
 
-  gpart add -t efi -s 260M da0
-  gpart add -t freebsd-ufs -s 20G da0
+    gpart add -t efi -s 260M da0
+    gpart add -t freebsd-ufs -s 20G da0
 
-Create ZFS partition **without -s** so it will be stretch to end of the disk:
+4. Create ZFS partition **without -s** so it will be stretch to end of the disk:
 
-  gpart add -t freebsd-zfs da0
+    gpart add -t freebsd-zfs da0
 
-Format EFI, UFS and ZFS partitions:
+5. Format EFI, UFS and ZFS partitions:
 
-  newfs_msdos -F 32 -c 1 /dev/da0p1
-  newfs -U /dev/da0p2
-  zpool create mypool /dev/da0p3
+    newfs_msdos -F 32 -c 1 /dev/da0p1
+    newfs -U /dev/da0p2
+    zpool create mypool /dev/da0p3
 
-Check result:
+6. Check result:
 
-  gpart show da0
-  zpool status
-  zfs list
+    gpart show da0
+    zpool status
+    zfs list
+
+
+Backup and recovery
+===================
+
+Local disk ZFS backup and recovery before the FreeBSD upgrade
+-------------------------------------------------------------
+
+1. Create backup ZFS snapshot:
+
+    zfs snapshot zroot/ROOT/default@BEFORE_UPGRADE_TO_V15.0
+
+2. Create new Boot environment from the existing ZFS snapshot:
+
+    bectl create -e zroot/ROOT/default@BEFORE_UPGRADE_TO_V15.0 before-v15
+
+3. Suppose here you are doing update of FreeBSD and it FAILED:
+
+    freebsd-update -r 15.0-RELEASE upgrade
+    FATAL ERROR
+
+4. Set active Boot environment for rollback:
+
+    bectl activate -t before-v15
+
+
+External disk ZFS backup and recovery:
+--------------------------------------
+
+1. Send snapshot to externsal disk:
+
+    zfs send zroot/ROOT/default@BEFORE_UPGRADE_TO_V15.0 > /mnt/zroot--ROOT--default@BEFORE_UPGRADE_TO_V15.0.zfs
+
+2. Receive snasphot from external disk to new default:
+
+    zfs receive zroot/ROOT/new_default < /mnt/zroot--ROOT--default@BEFORE_UPGRADE_TO_V15.0.zfs
+
+3. Optional: Activate new Boot environment for next reboot:
+
+    bectl activate new_default
+    
+
+
+Live CD tips
+------------
+
+Start with re-mount of the root filesystem for read-write:
+
+    mount -u -o rw /
+
+
+
+
+
