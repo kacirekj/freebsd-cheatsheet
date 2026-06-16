@@ -30,10 +30,15 @@ TIPS
 
           find 2> /dev/null
 
-     Run on background:                          &
-     Suspend process:                            Ctrl+Z
-     Run suspend process on background:          bg
-     Move background process to foreground:      fg
+     Suspend process to background, run process on background, move to fg:                          &
+          
+          Ctrl+Z
+          bg
+          fg
+
+     Run process on background as daemon service:
+
+          daemon -f -o output.log some_command
 
 
      Live CD tips
