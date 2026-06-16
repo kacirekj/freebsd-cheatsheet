@@ -30,6 +30,11 @@ TIPS
 
           find 2> /dev/null
 
+     Run on background:                          &
+     Suspend process:                            Ctrl+Z
+     Run suspend process on background:          bg
+     Move background process to foreground:      fg
+
 
      Live CD tips
      ------------
