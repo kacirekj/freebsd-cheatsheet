@@ -41,31 +41,67 @@ TIPS
           daemon -f -o output.log some_command
 
 
-     Live CD tips
-     ------------
+LIVE CD RECOVERY
+================
 
-     Start with re-mount of the root filesystem for read-write when encountering "read-only file system" error:
+
+     Tips
+     ----
+
+     Re-mount the root filesystem for read-write when encountering "read-only file system" error:
 
           mount -u -o rw /
 
 
-WIFI CONNECTION
-===============
+     Change boot environment
+     -----------------------
 
-     List:
+     1. Import the ZFS partition via "zpool import".
+
+     2. Get active boot environment
+
+          zpool get bootfs zroot
+
+     3. Set a different boot environment:
+
+          zpool set bootfs=zroot/ROOT/before-update-to-15-0 zroot
+          reboot 
+
+
+NETWORK CONNECTION
+==================
+
+
+     Wireless Wifi via DHCP
+     ----------------------
+
+     1. List APs:
 
           ifconfig wlan0 scan
 
 
-     Prepare rc.conf if needed
-     -------------------------
-
-     Connect:
+     2. Connect:
 
           wpa_passphrase "SSID" "PASSWORD" > /etc/wpa_supplicant.conf
           ifconfig wlan0 up
           wpa_supplicant -B -i wlan0 -c /etc/wpa_supplicant.conf
           dhclient wlan0
+
+
+     LAN connection via DHCP
+     -----------------------
+
+     Just find the LAN interface (usualy em0) and connect:
+
+          ifconfig
+          dhclient em9
+
+
+
+LAN CONNECTION
+==============
+
+     
 
 
 MOUNT FILESYSTEMS
