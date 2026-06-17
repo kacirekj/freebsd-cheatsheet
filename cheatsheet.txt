@@ -128,6 +128,31 @@ UPGRADE FREEBSD
           freebsd-update install
 
 
+SOFTWARE INSTALLATION
+=====================
+
+     List all installed packages and search for installed package:
+
+          pkg info
+          pkg info | grep firefox-esr
+
+     List packages installed by package:
+
+          pkg info -l firefox-esr
+
+     Search for package in repository including desription:
+
+          pkg search -D browser
+
+     Remove redudnant packages:
+
+          pkg autoremove
+
+     Refresh repository info:
+
+          pkg update -f
+
+
 MOUNT FILESYSTEMS
 =================
 
