@@ -156,23 +156,25 @@ BACKUP AND RESTORE WITH ZFS ROOT PARTITION
      Backup and recover root partition with ZFS
      ------------------------------------------
 
-     1. Create an ZFS backup snapshot:
-
-          zfs snapshot zroot/ROOT/default@BEFORE_UPGRADE_TO_V15.0
-
-     2. Create new Boot environment from the ZFS snapshot:
-
-          bectl create -e zroot/ROOT/default@BEFORE_UPGRADE_TO_V15.0 before-v15
-
-     3. Suppose here you are doing update of FreeBSD and it FAILED:
-
+     1. Create a boot environment from the current root system and verify:
+     
+          bectl create before-update-to-15-0     
+          bectl list
+     
+     2. Do the FreeBSD upgrade:
+     
           freebsd-update -r 15.0-RELEASE upgrade
-          FATAL ERROR
-
-     4. Recover by setting active Boot environment for the next reboot:
-
-          bectl activate -t before-v15
+          freebsd-update install
           reboot
+     
+     3. If the upgrade fails, temporarily boot the previous environment:
+     
+          bectl activate -t before-update-to-15-0
+          reboot
+     
+     4. If the recovered environment works and should become permanent:
+
+          bectl activate before-update-to-15-0
 
 
      Backup and recover root partition from external drive
