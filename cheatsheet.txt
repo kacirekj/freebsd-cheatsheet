@@ -52,6 +52,16 @@ LIVE CD RECOVERY
 
           mount -u -o rw /
 
+     Or change it permanently in:
+
+          vi /etc/fstab
+
+     Enlarge the filesystem
+
+          gpart resize -i 2 -s 5G /dev/da0s2
+          gpart resize -i 1 -s 4G /dev/da0s2a
+          growfs /
+
 
      Change boot environment
      -----------------------
