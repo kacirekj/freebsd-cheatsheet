@@ -131,7 +131,7 @@ UPGRADE FREEBSD
 SOFTWARE INSTALLATION
 =====================
 
-     List all installed packages and search for installed package:
+     List all installed packages and search in installed package:
 
           pkg info
           pkg info | grep firefox-esr
@@ -140,9 +140,9 @@ SOFTWARE INSTALLATION
 
           pkg info -l firefox-esr
 
-     Search for package in repository including desription:
+     Search for package by name or by desription:
 
-          pkg search -D browser
+          pkg search firefox
 
      Remove redudnant packages:
 
