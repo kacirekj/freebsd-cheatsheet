@@ -97,11 +97,35 @@ NETWORK CONNECTION
           dhclient em9
 
 
-
-LAN CONNECTION
-==============
-
+UPGRADE FREEBSD
+===============
      
+     1. Apply security patches:
+
+          freebsd-update fetch
+          freebsd-update install
+
+     2. First step to upgrade:
+
+          freebsd-update -r 13.2-RELEASE upgrade
+
+     3. Follow the instllator, it will want to type several:
+
+          freebsd-update install
+          reboot
+          freebsd-update install
+
+     4. Update also Ports:
+
+          pkg-static upgrade -f
+
+     5. OPTIONAL: Rebuild all aps installed from ports:
+
+          portmaster -af
+
+     6. At the end:
+
+          freebsd-update install
 
 
 MOUNT FILESYSTEMS
