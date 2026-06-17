@@ -44,7 +44,7 @@ TIPS
      Live CD tips
      ------------
 
-     Start with re-mount of the root filesystem for read-write:
+     Start with re-mount of the root filesystem for read-write when encountering "read-only file system" error:
 
           mount -u -o rw /
 
